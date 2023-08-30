@@ -1,10 +1,83 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
+
+let testProducts = [
+  {
+    name: "Shirt",
+    imgAlt: "alt1",
+    img: "https://i.pinimg.com/564x/15/f1/da/15f1dae2caac44e7bcec9611ec721b61.jpg",
+    price: 29.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: ''
+  },
+  {
+    name: "Jacket",
+    imgAlt: "alt2",
+    img: "https://i.pinimg.com/564x/3c/5c/63/3c5c63f8b7a2e430f6edc3174a5dd582.jpg",
+    price: 59.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: ''
+  },
+  {
+    name: "Jacket",
+    imgAlt: "alt2",
+    img: "https://cdn.donmai.us/sample/fc/32/__original_drawn_by_berryverrine__sample-fc3204f82b4d47a85134864853c48f02.jpg",
+    price: 59.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: ''
+  },
+  {
+    name: "Jacket",
+    imgAlt: "alt2",
+    img: "https://s1.zerochan.net/BerryVerrine.600.3348227.jpg",
+    price: 59.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: ''
+  },
+  {
+    name: "Jacket",
+    imgAlt: "alt2",
+    img: "https://s1.zerochan.net/BerryVerrine.600.3413962.jpg",
+    price: 59.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: ''
+  },
+];
 
 const imageSrc = ref("");
 const fileInput = ref(null);
+const products = ref([]);
+let windowWidth = ref(window.innerWidth)
 
+const productsShort = computed(() =>
+  products.value.sort((a, b) => {
+    return a.createdAt - b.createdAt;
+  })
+);
+
+const productsNew = computed(() => {
+  const newProds = products.value.filter((prods) => prods.state === "new");
+
+  newProds.sort((a, b) => {
+    return a.createdAt - b.createdAt;
+  });
+
+  return newProds;
+});
+
+const typeOfWindowWidth = computed(() => {
+  if(windowWidth.value < 600) return 0
+  else if(windowWidth.value >= 600 && windowWidth.value < 1024) return 1
+  else if(windowWidth.value >= 1024 && windowWidth.value < 1920) return 2
+  else if(windowWidth.value >= 1920) return 3
+})
+ 
 const openFileInput = () => {
   fileInput.value.click();
 };
@@ -21,9 +94,30 @@ const handleFileInput = (e) => {
   }
 };
 
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
+watch(
+  products,
+  (newProduct) => {
+    localStorage.setItem("products", JSON.stringify(newProduct));
+  },
+  { deep: true }
+);
+
 onMounted(() => {
   imageSrc.value = localStorage.getItem("mainImg") || defaultImage;
+  //products.value = JSON.parse(localStorage.getItem("products")) || [];
+  products.value = testProducts
+
+  window.addEventListener('resize', handleResize)
 });
+
+onBeforeMount(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
 </script>
 
 <template>
@@ -36,6 +130,11 @@ onMounted(() => {
         @change="handleFileInput"
       />
       <img :src="imageSrc" alt="Selected Image" @click="openFileInput" />
+      <div class="text-box">
+        <h4>Design For The People Of Tomorrow</h4>
+        <h1>Summer Collection</h1>
+        <button>Descover Now</button>
+      </div>
     </section>
     <section class="shop-men-women">
       <div class="shop-men">
@@ -45,6 +144,51 @@ onMounted(() => {
       <div class="shop-women">
         <img src="../assets/hutao render2.jpg" alt="Female Shop" />
         <button>Shop Women</button>
+      </div>
+    </section>
+    <section class="new-arrivals">
+      <h1>New Arrivals</h1>
+      <div class="new-arrivals-content">
+        <div class="new-arrivals-gallery" v-if="typeOfWindowWidth == 0" v-for="product in productsNew.slice(0, 1)">
+          <div class="arrivals-box" v-if="product.state === 'new'">
+            <div class="arrivals-img-box">
+              <img :src="product.img" :alt="product.imgAlt" />
+              <h3>New</h3>
+            </div>
+            <h4>{{ product.name }}</h4>
+            <h4>€{{ product.price }}</h4>
+          </div>
+        </div>
+        <div class="new-arrivals-gallery" v-else-if="typeOfWindowWidth == 1" v-for="product in productsNew.slice(0, 2)">
+          <div class="arrivals-box" v-if="product.state === 'new'">
+            <div class="arrivals-img-box">
+              <img :src="product.img" :alt="product.imgAlt" />
+              <h3>New</h3>
+            </div>
+            <h4>{{ product.name }}</h4>
+            <h4>€{{ product.price }}</h4>
+          </div>
+        </div>
+        <div class="new-arrivals-gallery" v-else-if="typeOfWindowWidth == 2" v-for="product in productsNew.slice(0, 3)">
+          <div class="arrivals-box" v-if="product.state === 'new'">
+            <div class="arrivals-img-box">
+              <img :src="product.img" :alt="product.imgAlt" />
+              <h3>New</h3>
+            </div>
+            <h4>{{ product.name }}</h4>
+            <h4>€{{ product.price }}</h4>
+          </div>
+        </div>
+        <div class="new-arrivals-gallery" v-else v-for="product in productsNew.slice(0, 5)">
+          <div class="arrivals-box" v-if="product.state === 'new'">
+            <div class="arrivals-img-box">
+              <img :src="product.img" :alt="product.imgAlt" />
+              <h3>New</h3>
+            </div>
+            <h4>{{ product.name }}</h4>
+            <h4>€{{ product.price }}</h4>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -57,6 +201,7 @@ main {
 }
 
 .main-img {
+  position: relative;
   background-image: url();
   width: 100%;
   height: 100vh;
@@ -81,6 +226,44 @@ main {
   opacity: 0.8;
 }
 
+.text-box {
+  position: absolute;
+  z-index: 2;
+  height: 150px;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-box h1 {
+  font-size: 2.5rem;
+}
+
+.text-box h4 {
+  font-size: 1.2rem;
+}
+
+.text-box button {
+  width: 200px;
+  border: none;
+  appearance: none;
+  height: 50px;
+  font-weight: bold;
+  background-image: linear-gradient(to right, whitesmoke 50%, #d72041 50%);
+  background-size: 200%;
+  transition: 0.4s;
+}
+
+.text-box button:hover {
+  background-position: right;
+  color: whitesmoke;
+}
+
 .shop-men-women {
   position: relative;
   display: flex;
@@ -90,8 +273,9 @@ main {
   height: 90vh;
 }
 
-.shop-men, .shop-women{
-    position: relative;
+.shop-men,
+.shop-women {
+  position: relative;
 }
 
 .shop-men-women img {
@@ -113,29 +297,84 @@ main {
   object-position: 50% 20%;
 }
 
-.shop-men-women .shop-men button, .shop-men-women .shop-women button{
-    appearance: none;
-    outline: none;
-    border: none;
-    
-    z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+.shop-men-women .shop-men button,
+.shop-men-women .shop-women button {
+  appearance: none;
+  outline: none;
+  border: none;
 
-    width: 150px;
-    height: 50px;
-    background-image: linear-gradient(to right, #111 50%, whitesmoke 50%);
-    background-size: 200%;
-    font-weight: bold;
-    color: white;
-    transform: translate(-50%, -50%);
-    transition: 0.4s;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 150px;
+  height: 50px;
+  background-image: linear-gradient(to right, #111 50%, whitesmoke 50%);
+  background-size: 200%;
+  font-weight: bold;
+  color: white;
+  transform: translate(-50%, -50%);
+  transition: 0.4s;
 }
 
-.shop-men-women .shop-men button:hover, .shop-men-women .shop-women button:hover{
+.shop-men-women .shop-men button:hover,
+.shop-men-women .shop-women button:hover {
   background-position: right;
   color: #111;
+}
+
+.new-arrivals {
+  z-index: 1;
+  position: relative;
+}
+
+.new-arrivals h1 {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.new-arrivals .new-arrivals-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.new-arrivals .new-arrivals-gallery {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 500px;
+}
+
+.new-arrivals .new-arrivals-gallery .arrivals-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  width: 250px;
+  height: 100%;
+}
+
+.new-arrivals .new-arrivals-gallery .arrivals-img-box {
+  width: 100%;
+  height: 400px;
+}
+
+.new-arrivals .new-arrivals-gallery .arrivals-img-box img {
+  width: 100%;
+  height: 100%;
+}
+
+.new-arrivals .new-arrivals-gallery .arrivals-img-box h3 {
+  width: 100%;
+  text-align: center;
+  color: goldenrod;
+  background-color: #111;
+  top: 100;
+  transform: translate(0, -100%);
 }
 
 @media only screen and (min-width: 600px) {
