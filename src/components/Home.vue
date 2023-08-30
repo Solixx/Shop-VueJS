@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
+import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
 
 let testProducts = [
   {
@@ -10,7 +11,7 @@ let testProducts = [
     price: 29.99,
     createdAt: new Date().getTime(),
     state: "new",
-    link: ''
+    link: "",
   },
   {
     name: "Jacket",
@@ -19,41 +20,42 @@ let testProducts = [
     price: 59.99,
     createdAt: new Date().getTime(),
     state: "new",
-    link: ''
+    link: "",
+  },
+  {
+    name: "Shirt",
+    imgAlt: "alt2",
+    img: "https://i.pinimg.com/564x/5e/a9/b6/5ea9b64cddb01bf45be651c4b24ba5b2.jpg",
+    price: 29.99,
+    createdAt: new Date().getTime(),
+    state: "new",
+    link: "",
   },
   {
     name: "Jacket",
     imgAlt: "alt2",
-    img: "https://cdn.donmai.us/sample/fc/32/__original_drawn_by_berryverrine__sample-fc3204f82b4d47a85134864853c48f02.jpg",
+    img: "https://i.pinimg.com/564x/50/2f/d2/502fd290fd3a5e938272fbc294ad8f24.jpg",
     price: 59.99,
     createdAt: new Date().getTime(),
     state: "new",
-    link: ''
+    link: "",
   },
   {
-    name: "Jacket",
+    name: "Shirt",
     imgAlt: "alt2",
-    img: "https://s1.zerochan.net/BerryVerrine.600.3348227.jpg",
-    price: 59.99,
+    img: "https://i.pinimg.com/564x/dd/61/aa/dd61aa76ff411cbba1542f783386222f.jpg",
+    price: 29.99,
     createdAt: new Date().getTime(),
     state: "new",
-    link: ''
-  },
-  {
-    name: "Jacket",
-    imgAlt: "alt2",
-    img: "https://s1.zerochan.net/BerryVerrine.600.3413962.jpg",
-    price: 59.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: ''
+    link: "",
   },
 ];
 
-const imageSrc = ref("");
+const mainSrc = ref("");
+const primeSrc = ref(primeImage);
 const fileInput = ref(null);
 const products = ref([]);
-let windowWidth = ref(window.innerWidth)
+let windowWidth = ref(window.innerWidth);
 
 const productsShort = computed(() =>
   products.value.sort((a, b) => {
@@ -72,31 +74,31 @@ const productsNew = computed(() => {
 });
 
 const typeOfWindowWidth = computed(() => {
-  if(windowWidth.value < 600) return 0
-  else if(windowWidth.value >= 600 && windowWidth.value < 1024) return 1
-  else if(windowWidth.value >= 1024 && windowWidth.value < 1920) return 2
-  else if(windowWidth.value >= 1920) return 3
-})
- 
+  if (windowWidth.value < 600) return 0;
+  else if (windowWidth.value >= 600 && windowWidth.value < 1024) return 1;
+  else if (windowWidth.value >= 1024 && windowWidth.value < 1920) return 2;
+  else if (windowWidth.value >= 1920) return 3;
+});
+
 const openFileInput = () => {
   fileInput.value.click();
 };
 
-const handleFileInput = (e) => {
+const handleFileInput = (event) => {
   const selectedFile = event.target.files[0];
   if (selectedFile) {
     const reader = new FileReader();
     reader.onload = () => {
-      imageSrc.value = reader.result;
-      localStorage.setItem("mainImg", imageSrc.value);
+      mainSrc.value = reader.result;
+      localStorage.setItem("mainImg", mainSrc.value);
     };
     reader.readAsDataURL(selectedFile);
   }
 };
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth
-}
+  windowWidth.value = window.innerWidth;
+};
 
 watch(
   products,
@@ -107,17 +109,16 @@ watch(
 );
 
 onMounted(() => {
-  imageSrc.value = localStorage.getItem("mainImg") || defaultImage;
+  mainSrc.value = localStorage.getItem("mainImg") || defaultImage;
   //products.value = JSON.parse(localStorage.getItem("products")) || [];
-  products.value = testProducts
+  products.value = testProducts;
 
-  window.addEventListener('resize', handleResize)
+  window.addEventListener("resize", handleResize);
 });
 
 onBeforeMount(() => {
-  window.removeEventListener('resize', handleResize)
-})
-
+  window.removeEventListener("resize", handleResize);
+});
 </script>
 
 <template>
@@ -129,7 +130,7 @@ onBeforeMount(() => {
         style="display: none"
         @change="handleFileInput"
       />
-      <img :src="imageSrc" alt="Selected Image" @click="openFileInput" />
+      <img :src="mainSrc" alt="Selected Image" @click="openFileInput" />
       <div class="text-box">
         <h4>Design For The People Of Tomorrow</h4>
         <h1>Summer Collection</h1>
@@ -149,7 +150,11 @@ onBeforeMount(() => {
     <section class="new-arrivals">
       <h1>New Arrivals</h1>
       <div class="new-arrivals-content">
-        <div class="new-arrivals-gallery" v-if="typeOfWindowWidth == 0" v-for="product in productsNew.slice(0, 1)">
+        <div
+          class="new-arrivals-gallery"
+          v-if="typeOfWindowWidth == 0"
+          v-for="product in productsNew.slice(0, 1)"
+        >
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
@@ -159,7 +164,11 @@ onBeforeMount(() => {
             <h4>€{{ product.price }}</h4>
           </div>
         </div>
-        <div class="new-arrivals-gallery" v-else-if="typeOfWindowWidth == 1" v-for="product in productsNew.slice(0, 2)">
+        <div
+          class="new-arrivals-gallery"
+          v-else-if="typeOfWindowWidth == 1"
+          v-for="product in productsNew.slice(0, 2)"
+        >
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
@@ -169,7 +178,11 @@ onBeforeMount(() => {
             <h4>€{{ product.price }}</h4>
           </div>
         </div>
-        <div class="new-arrivals-gallery" v-else-if="typeOfWindowWidth == 2" v-for="product in productsNew.slice(0, 3)">
+        <div
+          class="new-arrivals-gallery"
+          v-else-if="typeOfWindowWidth == 2"
+          v-for="product in productsNew.slice(0, 3)"
+        >
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
@@ -179,7 +192,11 @@ onBeforeMount(() => {
             <h4>€{{ product.price }}</h4>
           </div>
         </div>
-        <div class="new-arrivals-gallery" v-else v-for="product in productsNew.slice(0, 5)">
+        <div
+          class="new-arrivals-gallery"
+          v-else
+          v-for="product in productsNew.slice(0, 5)"
+        >
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
@@ -189,6 +206,15 @@ onBeforeMount(() => {
             <h4>€{{ product.price }}</h4>
           </div>
         </div>
+      </div>
+    </section>
+    <section class="prime-img">
+      <input type="file" style="display: none" />
+      <img :src="primeSrc" alt="Selected Image" />
+      <div class="text-box">
+        <h4>DESIGN FOR THE PRIME PEOPLE</h4>
+        <h1>PRIME COLLECTIONn</h1>
+        <button>Descover Now</button>
       </div>
     </section>
   </main>
@@ -226,6 +252,24 @@ main {
   opacity: 0.8;
 }
 
+.prime-img {
+  position: relative;
+  background-image: url();
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  transition: 0.1s ease;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 10rem 10rem;
+}
+
+.prime-img img {
+  width: 100%;
+  height: 100%;
+  transition: 0.5s ease;
+}
+
 .text-box {
   position: absolute;
   z-index: 2;
@@ -241,11 +285,11 @@ main {
 }
 
 .text-box h1 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
 }
 
 .text-box h4 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 
 .text-box button {
@@ -260,6 +304,45 @@ main {
 }
 
 .text-box button:hover {
+  background-position: right;
+  color: whitesmoke;
+}
+
+.prime-img .text-box {
+  position: absolute;
+  z-index: 2;
+  height: 150px;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  color: goldenrod;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prime-img .text-box h1 {
+  font-size: 3rem;
+}
+
+.prime-img .text-box h4 {
+  font-size: 1.5rem;
+}
+
+.prime-img .text-box button {
+  width: 200px;
+  border: none;
+  appearance: none;
+  height: 50px;
+  font-weight: bold;
+  background-image: linear-gradient(to right, #111 50%, goldenrod 50%);
+  background-size: 200%;
+  transition: 0.4s;
+  color: whitesmoke;
+}
+
+.prime-img .text-box button:hover {
   background-position: right;
   color: whitesmoke;
 }

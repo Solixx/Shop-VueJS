@@ -25,6 +25,10 @@ section{
   margin-bottom: 6.5rem;
 }
 
+section:last-child{
+  margin-bottom: 0;
+}
+
 img{
   object-fit:cover;
   object-position:50% 50%;
