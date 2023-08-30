@@ -1,0 +1,35 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+body{
+  background-color:rgb(243, 243, 243);
+}
+
+p, h1, h2, h3, h4, h5, h6, span, button, select, option{
+  text-transform: uppercase;
+}
+
+button{
+  cursor: pointer;
+}
+
+section{
+  margin-bottom: 6.5rem;
+}
+
+img{
+  object-fit:cover;
+  object-position:50% 50%;
+
+  image-rendering: auto;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: -webkit-optimize-contrast;
+}
