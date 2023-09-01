@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
+
 import Home from "./components/Home.vue";
 import AdminPanel from "./components/AdminPanel.vue";
 import AddProduct from "./components/AddProduct.vue";
+import VoiceRecognition from "./components//VoiceRecognition.vue";
 
 let testProducts = [
   {
@@ -54,7 +56,7 @@ let testProducts = [
 
 const products = ref([]);
 const popupTriggers = ref({
-  addProduct: true
+  addProduct: false
 })
 
 const productsShort = computed(() =>
@@ -76,6 +78,11 @@ const productsNew = computed(() => {
 const handleAddNewProduct = (newProduct) => {
   products.value.push(newProduct);
 };
+
+const handleToggleAddProduct = (val) => {
+  console.log("toggle add producvt")
+  popupTriggers.value.addProduct = val
+}
 
 const togglePopup = (trigger) => {
   popupTriggers.value[trigger] = !popupTriggers.value[trigger]
@@ -106,6 +113,7 @@ onMounted(() => {
       <button class="addproducts-popup-close" @click="togglePopup('addProduct')">X</button>
     </AddProduct>
   </div>
+  <VoiceRecognition class="voiceRecognition" @toggleAddProduct="handleToggleAddProduct" />
 </template>
 
 <style scoped>
@@ -127,5 +135,11 @@ onMounted(() => {
   width: 500px;
   background-color: 	rgba(255,255,255, 1);
   border-radius: 1%;
+}
+
+.voiceRecognition{
+  position: fixed;
+  bottom: 2.5%;
+  right: 2.5%;
 }
 </style>
