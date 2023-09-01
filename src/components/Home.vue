@@ -2,6 +2,7 @@
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
+import AdminPanel from "./AdminPanel.vue";
 
 let testProducts = [
   {
@@ -100,6 +101,10 @@ const handleResize = () => {
   windowWidth.value = window.innerWidth;
 };
 
+const handleAddNewProduct = (newProduct) => {
+  products.value.push(newProduct);
+};
+
 watch(
   products,
   (newProduct) => {
@@ -110,9 +115,8 @@ watch(
 
 onMounted(() => {
   mainSrc.value = localStorage.getItem("mainImg") || defaultImage;
-  //products.value = JSON.parse(localStorage.getItem("products")) || [];
-  products.value = testProducts;
-
+  products.value = JSON.parse(localStorage.getItem("products")) || testProducts;
+  console.log(products.value)
   window.addEventListener("resize", handleResize);
 });
 
@@ -148,7 +152,7 @@ onBeforeMount(() => {
       </div>
     </section>
     <section class="new-arrivals">
-      <h1>New Arrivals</h1>
+      <h2 class="new-arrivals-title">New Arrivals</h2>
       <div class="new-arrivals-content">
         <div
           class="new-arrivals-gallery"
@@ -158,7 +162,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h3>New</h3>
+              <h4 class="new-arrivals-text">New</h4>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -172,7 +176,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h3>New</h3>
+              <h4 class="new-arrivals-text">New</h4>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -186,7 +190,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h3>New</h3>
+              <h4 class="new-arrivals-text">New</h4>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -200,7 +204,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h3>New</h3>
+              <h4 class="new-arrivals-text">New</h4>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -217,6 +221,8 @@ onBeforeMount(() => {
         <button>Descover Now</button>
       </div>
     </section>
+
+    <AdminPanel :products="products" @addNewProduct="handleAddNewProduct"></AdminPanel>
   </main>
 </template>
 
@@ -284,14 +290,6 @@ main {
   align-items: center;
 }
 
-.text-box h1 {
-  font-size: 2.75rem;
-}
-
-.text-box h4 {
-  font-size: 1.25rem;
-}
-
 .text-box button {
   width: 200px;
   border: none;
@@ -320,14 +318,6 @@ main {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-}
-
-.prime-img .text-box h1 {
-  font-size: 3rem;
-}
-
-.prime-img .text-box h4 {
-  font-size: 1.5rem;
 }
 
 .prime-img .text-box button {
@@ -412,7 +402,7 @@ main {
   position: relative;
 }
 
-.new-arrivals h1 {
+.new-arrivals .new-arrivals-title {
   margin-bottom: 35px;
   text-align: center;
 }
@@ -451,7 +441,7 @@ main {
   height: 100%;
 }
 
-.new-arrivals .new-arrivals-gallery .arrivals-img-box h3 {
+.new-arrivals .new-arrivals-gallery .arrivals-img-box .new-arrivals-text {
   width: 100%;
   text-align: center;
   color: goldenrod;
