@@ -4,82 +4,16 @@ import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
 import AdminPanel from "./AdminPanel.vue";
 
-let testProducts = [
-  {
-    name: "Shirt",
-    imgAlt: "alt1",
-    img: "https://i.pinimg.com/564x/15/f1/da/15f1dae2caac44e7bcec9611ec721b61.jpg",
-    price: 29.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: "",
+const props = defineProps({
+  products: {
+    type: Array
   },
-  {
-    name: "Jacket",
-    imgAlt: "alt2",
-    img: "https://i.pinimg.com/564x/3c/5c/63/3c5c63f8b7a2e430f6edc3174a5dd582.jpg",
-    price: 59.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: "",
-  },
-  {
-    name: "Shirt",
-    imgAlt: "alt2",
-    img: "https://i.pinimg.com/564x/5e/a9/b6/5ea9b64cddb01bf45be651c4b24ba5b2.jpg",
-    price: 29.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: "",
-  },
-  {
-    name: "Jacket",
-    imgAlt: "alt2",
-    img: "https://i.pinimg.com/564x/50/2f/d2/502fd290fd3a5e938272fbc294ad8f24.jpg",
-    price: 59.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: "",
-  },
-  {
-    name: "Shirt",
-    imgAlt: "alt2",
-    img: "https://i.pinimg.com/564x/dd/61/aa/dd61aa76ff411cbba1542f783386222f.jpg",
-    price: 29.99,
-    createdAt: new Date().getTime(),
-    state: "new",
-    link: "",
-  },
-];
+});
 
 const mainSrc = ref("");
 const primeSrc = ref(primeImage);
 const fileInput = ref(null);
-const products = ref([]);
 let windowWidth = ref(window.innerWidth);
-
-const productsShort = computed(() =>
-  products.value.sort((a, b) => {
-    return a.createdAt - b.createdAt;
-  })
-);
-
-const productsNew = computed(() => {
-  const newProds = products.value.filter((prods) => prods.state === "new");
-
-  newProds.sort((a, b) => {
-    return a.createdAt - b.createdAt;
-  });
-
-  return newProds;
-});
-
-const typeOfWindowWidth = computed(() => {
-  if (windowWidth.value < 600) return 0;
-  else if (windowWidth.value >= 600 && windowWidth.value < 1024) return 1;
-  else if (windowWidth.value >= 1024 && windowWidth.value < 1920) return 2;
-  else if (windowWidth.value >= 1920) return 3;
-});
 
 const openFileInput = () => {
   fileInput.value.click();
@@ -97,26 +31,35 @@ const handleFileInput = (event) => {
   }
 };
 
+const productsShort = computed(() =>
+  props.products.sort((a, b) => {
+    return a.createdAt - b.createdAt;
+  })
+);
+
+const productsNew = computed(() => {
+  const newProds = props.products.filter((prods) => prods.state === "new");
+
+  newProds.sort((a, b) => {
+    return a.createdAt - b.createdAt;
+  });
+
+  return newProds;
+});
+
+const typeOfWindowWidth = computed(() => {
+  if (windowWidth.value < 600) return 0;
+  else if (windowWidth.value >= 600 && windowWidth.value < 1024) return 1;
+  else if (windowWidth.value >= 1024 && windowWidth.value < 1920) return 2;
+  else if (windowWidth.value >= 1920) return 3;
+});
+
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
 };
 
-const handleAddNewProduct = (newProduct) => {
-  products.value.push(newProduct);
-};
-
-watch(
-  products,
-  (newProduct) => {
-    localStorage.setItem("products", JSON.stringify(newProduct));
-  },
-  { deep: true }
-);
-
 onMounted(() => {
   mainSrc.value = localStorage.getItem("mainImg") || defaultImage;
-  products.value = JSON.parse(localStorage.getItem("products")) || testProducts;
-  console.log(products.value)
   window.addEventListener("resize", handleResize);
 });
 
@@ -221,8 +164,6 @@ onBeforeMount(() => {
         <button>Descover Now</button>
       </div>
     </section>
-
-    <AdminPanel :products="products" @addNewProduct="handleAddNewProduct"></AdminPanel>
   </main>
 </template>
 
