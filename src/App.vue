@@ -5,7 +5,7 @@ import Home from "./views/Home.vue";
 import AdminPanel from "./components/AdminPanel.vue";
 import AddProduct from "./components/AddProduct.vue";
 import VoiceRecognition from "./components//VoiceRecognition.vue";
-import { useStore } from "vuex"; // Import the Vuex store
+import { useProductsStore } from './store/products';
 
 let testProducts = [
   {
@@ -55,7 +55,7 @@ let testProducts = [
   },
 ];
 
-const store = useStore(); // Access the Vuex store
+const store = useProductsStore();
 
 const popupTriggers = ref({
   addProduct: false
@@ -70,7 +70,7 @@ const togglePopup = (trigger) => {
 }
 
 watch(
-  store.state.products,
+  store.products,
   (newProduct) => {
     localStorage.setItem("products", JSON.stringify(newProduct));
   },

@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
-import { useStore } from "vuex"; // Import the Vuex store
+import { useProductsStore } from '../store/products';
 
-const store = useStore(); // Access the Vuex store
+const store = useProductsStore();
 
 const inputName = ref("");
 const inputImgAlt = ref("");
@@ -31,7 +31,7 @@ const addProduct = () => {
     link: "",
   };
   
-  store.dispatch("addProduct", newProduct)
+  store.addProduct(newProduct)
 
   emptyProductInput();
 };

@@ -3,9 +3,9 @@ import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
 import AdminPanel from "../components/AdminPanel.vue";
-import { useStore } from 'vuex';
+import { useProductsStore } from '../store/products';
 
-const store = useStore();
+const store = useProductsStore();
 
 const mainSrc = ref("");
 const primeSrc = ref(primeImage);
@@ -29,13 +29,13 @@ const handleFileInput = (event) => {
 };
 
 const productsShort = computed(() =>
-  store.state.products.sort((a, b) => {
+  store.products.sort((a, b) => {
     return a.createdAt - b.createdAt;
   })
 );
 
 const productsNew = computed(() => {
-  const newProds = store.state.products.filter((prods) => prods.state === "new");
+  const newProds = store.products.filter((prods) => prods.state === "new");
 
   newProds.sort((a, b) => {
     return a.createdAt - b.createdAt;
@@ -56,7 +56,7 @@ const handleResize = () => {
 };
 
 watch(
-  store.state.products,
+  store.products,
   (newProduct) => {
     console.log(newProduct)
     localStorage.setItem("products", JSON.stringify(newProduct));

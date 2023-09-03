@@ -1,4 +1,6 @@
-import { createStore } from 'vuex';
+import { createPinia } from "pinia";
+
+import { defineStore } from 'pinia'
 
 let testProducts = [
   {
@@ -48,27 +50,13 @@ let testProducts = [
   },
 ];
 
-export default createStore({
-  state: {
-    products: JSON.parse(localStorage.getItem('products')) || testProducts, // Initialize with an empty array
-  },
-  mutations: {
-    setProducts(state, products) {
-      state.products = products;
-    },
-    addProduct(state, newProduct) {
-      // Push the new product to the products array
-      state.products.push(newProduct);
-    },
-    // Define other mutations for editing and deleting products
-  },
+export const useProductsStore = defineStore("products", {
+  state: () => ({
+    products: JSON.parse(localStorage.getItem('products')) || testProducts,
+  }),
   actions: {
-    addProduct({ commit }, newProduct) {
-      commit('addProduct', newProduct);
+    addProduct(newProduct) {
+      this.products.push(newProduct);
     },
-    // Define actions for making API calls, handling CRUD operations, etc.
-  },
-  getters: {
-    // Define getters to access and manipulate the products state
   },
 });
