@@ -1,13 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useStore } from "vuex"; // Import the Vuex store
 
-const props = defineProps({
-  products: {
-    type: Array,
-  },
-});
-
-const emit = defineEmits(["addProduct"]);
+const store = useStore(); // Access the Vuex store
 
 const inputName = ref("");
 const inputImgAlt = ref("");
@@ -35,7 +30,8 @@ const addProduct = () => {
     state: inputState.value,
     link: "",
   };
-  emit("addNewProduct", newProduct);
+  
+  store.dispatch("addProduct", newProduct)
 
   emptyProductInput();
 };

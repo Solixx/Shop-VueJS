@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 
-import Home from "./components/Home.vue";
+import Home from "./views/Home.vue";
 import AdminPanel from "./components/AdminPanel.vue";
 import AddProduct from "./components/AddProduct.vue";
 import VoiceRecognition from "./components//VoiceRecognition.vue";
+import { useStore } from "vuex"; // Import the Vuex store
 
 let testProducts = [
   {
@@ -54,33 +55,13 @@ let testProducts = [
   },
 ];
 
-const products = ref([]);
+const store = useStore(); // Access the Vuex store
+
 const popupTriggers = ref({
   addProduct: false
 })
 
-const productsShort = computed(() =>
-  products.value.sort((a, b) => {
-    return a.createdAt - b.createdAt;
-  })
-);
-
-const productsNew = computed(() => {
-  const newProds = products.value.filter((prods) => prods.state === "new");
-
-  newProds.sort((a, b) => {
-    return a.createdAt - b.createdAt;
-  });
-
-  return newProds;
-});
-
-const handleAddNewProduct = (newProduct) => {
-  products.value.push(newProduct);
-};
-
 const handleToggleAddProduct = (val) => {
-  console.log("toggle add producvt")
   popupTriggers.value.addProduct = val
 }
 
@@ -89,7 +70,7 @@ const togglePopup = (trigger) => {
 }
 
 watch(
-  products,
+  store.state.products,
   (newProduct) => {
     localStorage.setItem("products", JSON.stringify(newProduct));
   },
@@ -97,18 +78,21 @@ watch(
 );
 
 onMounted(() => {
-  products.value = JSON.parse(localStorage.getItem("products")) || testProducts;
+  if(localStorage.getItem('products') === null || localStorage.getItem('products') === [] || !localStorage.getItem('products')){
+    localStorage.setItem('products', JSON.stringify(testProducts))
+  }
 });
 </script>
 
 <template>
-  <Home :products="products" />
+  <router-link :to="{ name: 'Home'}">Home</router-link>
+  <router-link to="/about">About</router-link>
+  <router-view></router-view>
+  <!-- <Home :products="products" /> -->
   <!-- <AdminPanel :products="products" @addNewProduct="handleAddNewProduct"></AdminPanel> -->
   <div class="popup" v-if="popupTriggers.addProduct">
     <AddProduct
       class="addProduct"
-      :products="products"
-      @addNewProduct="handleAddNewProduct"
     >
       <button class="addproducts-popup-close" @click="togglePopup('addProduct')">X</button>
     </AddProduct>

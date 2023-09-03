@@ -2,13 +2,10 @@
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
-import AdminPanel from "./AdminPanel.vue";
+import AdminPanel from "../components/AdminPanel.vue";
+import { useStore } from 'vuex';
 
-const props = defineProps({
-  products: {
-    type: Array
-  },
-});
+const store = useStore();
 
 const mainSrc = ref("");
 const primeSrc = ref(primeImage);
@@ -32,13 +29,13 @@ const handleFileInput = (event) => {
 };
 
 const productsShort = computed(() =>
-  props.products.sort((a, b) => {
+  store.state.products.sort((a, b) => {
     return a.createdAt - b.createdAt;
   })
 );
 
 const productsNew = computed(() => {
-  const newProds = props.products.filter((prods) => prods.state === "new");
+  const newProds = store.state.products.filter((prods) => prods.state === "new");
 
   newProds.sort((a, b) => {
     return a.createdAt - b.createdAt;
@@ -57,6 +54,15 @@ const typeOfWindowWidth = computed(() => {
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
 };
+
+watch(
+  store.state.products,
+  (newProduct) => {
+    console.log(newProduct)
+    localStorage.setItem("products", JSON.stringify(newProduct));
+  },
+  { deep: true }
+);
 
 onMounted(() => {
   mainSrc.value = localStorage.getItem("mainImg") || defaultImage;
