@@ -2,7 +2,6 @@
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
-import AdminPanel from "../components/AdminPanel.vue";
 import { useProductsStore } from '../store/products';
 
 const store = useProductsStore();
@@ -93,11 +92,11 @@ onBeforeMount(() => {
     <section class="shop-men-women">
       <div class="shop-men">
         <img src="../assets/mikey13.jpg" alt="Men Shop" />
-        <a href="men.html"><button>Shop Men</button></a>
+        <RouterLink :to="{name: 'Shop'}"><button>Shop Men</button></RouterLink>
       </div>
       <div class="shop-women">
         <img src="../assets/hutao render2.jpg" alt="Female Shop" />
-        <button>Shop Women</button>
+        <RouterLink :to="{name: 'Shop'}"><button>Shop Women</button></RouterLink>
       </div>
     </section>
     <section class="new-arrivals">

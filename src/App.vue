@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 
-import Home from "./views/Home.vue";
-import AdminPanel from "./components/AdminPanel.vue";
+import Navbar from "./components/Navbar.vue";
 import AddProduct from "./components/AddProduct.vue";
 import VoiceRecognition from "./components//VoiceRecognition.vue";
 import { useProductsStore } from './store/products';
@@ -85,8 +84,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <router-link :to="{ name: 'Home'}">Home</router-link>
-  <router-link to="/about">About</router-link>
+  <Navbar />
   <router-view></router-view>
   <!-- <Home :products="products" /> -->
   <!-- <AdminPanel :products="products" @addNewProduct="handleAddNewProduct"></AdminPanel> -->
@@ -123,6 +121,7 @@ onMounted(() => {
 
 .voiceRecognition{
   position: fixed;
+  z-index: 99;
   bottom: 2.5%;
   right: 2.5%;
 }

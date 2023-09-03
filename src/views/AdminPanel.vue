@@ -1,12 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import AddProduct from "./AddProduct.vue"
-
-const props = defineProps({
-  products: {
-    type: Array
-  }
-});
+import AddProduct from "../components/AddProduct.vue"
 
 </script>
 

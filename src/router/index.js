@@ -1,9 +1,15 @@
 import Home from '../views/Home.vue'
+import AdminPanel from '../views/AdminPanel.vue'
+import Shop from '../views/Shop.vue'
+import Commands from '../views/Commands.vue'
 
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
-    {path: "/", name: "Home", component: Home, props: (route) => ({ products: route.params.products })},
+    {path: "/", name: "Home", component: Home},
+    {path: "/admin-panel", name: "AdminPanel", component: AdminPanel},
+    {path: "/shop", name: "Shop", component: Shop},
+    {path: "/commands", name: "Commands", component: Commands},
 ]
 
 const router = createRouter({
