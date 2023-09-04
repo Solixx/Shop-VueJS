@@ -9,6 +9,7 @@ const inputImgAlt = ref("");
 const inputImg = ref("");
 const inputPrice = ref(0);
 const inputState = ref("");
+const inputSale = ref(0);
 
 const addProduct = () => {
   if (
@@ -16,9 +17,13 @@ const addProduct = () => {
     inputImgAlt.value.trim() === "" ||
     inputImg.value.trim() === "" ||
     inputPrice.value <= 0 ||
-    inputState.value.trim() === ""
+    inputSale.value <= 0
   ) {
     return;
+  }
+
+  if(inputState.value.trim() === "" && inputSale.value > 0){
+    inputState.value = 'sale'
   }
 
   const newProduct = {
@@ -29,6 +34,7 @@ const addProduct = () => {
     createdAt: new Date().getTime(),
     state: inputState.value,
     link: "",
+    sale: inputSale.value
   };
   
   store.addProduct(newProduct)
@@ -67,6 +73,7 @@ const emptyProductInput = () => {
     <input id="file-upload" type="file" placeholder="Img" @change="handleImgChange" />
     <input type="number" placeholder="Price" v-model="inputPrice" />
     <input type="text" placeholder="State" v-model="inputState" />
+    <input type="number" placeholder="Sale" v-model="inputSale" />
     <button>Submit</button>
     <slot />
   </form>

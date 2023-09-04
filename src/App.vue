@@ -15,6 +15,9 @@ let testProducts = [
     createdAt: new Date().getTime(),
     state: "new",
     link: "",
+    sale: 10,
+    gender: 2, // 1 -> Men / 2 -> Women / 3 -> Onisex
+    categories: ['shirt']
   },
   {
     name: "Jacket",
@@ -24,6 +27,9 @@ let testProducts = [
     createdAt: new Date().getTime(),
     state: "new",
     link: "",
+    sale: 0,
+    gender: 3,
+    categories: ['jacket']
   },
   {
     name: "Shirt",
@@ -33,6 +39,9 @@ let testProducts = [
     createdAt: new Date().getTime(),
     state: "new",
     link: "",
+    sale: 0,
+    gender: 2,
+    categories: ['shirt']
   },
   {
     name: "Jacket",
@@ -42,6 +51,9 @@ let testProducts = [
     createdAt: new Date().getTime(),
     state: "new",
     link: "",
+    sale: 0,
+    gender: 1,
+    categories: ['jacket']
   },
   {
     name: "Shirt",
@@ -51,6 +63,9 @@ let testProducts = [
     createdAt: new Date().getTime(),
     state: "new",
     link: "",
+    sale: 0,
+    gender: 2,
+    categories: ['shirt']
   },
 ];
 

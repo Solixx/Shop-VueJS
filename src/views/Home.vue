@@ -110,7 +110,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h4 class="new-arrivals-text">New</h4>
+              <h5 class="new-arrivals-text">{{ product.state }}</h5>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -124,7 +124,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h4 class="new-arrivals-text">New</h4>
+              <h5 class="new-arrivals-text">{{ product.state }}</h5>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -138,7 +138,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h4 class="new-arrivals-text">New</h4>
+              <h5 class="new-arrivals-text">{{ product.state }}</h5>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
@@ -152,7 +152,7 @@ onBeforeMount(() => {
           <div class="arrivals-box" v-if="product.state === 'new'">
             <div class="arrivals-img-box">
               <img :src="product.img" :alt="product.imgAlt" />
-              <h4 class="new-arrivals-text">New</h4>
+              <h5 class="new-arrivals-text">{{ product.state }}</h5>
             </div>
             <h4>{{ product.name }}</h4>
             <h4>€{{ product.price }}</h4>
