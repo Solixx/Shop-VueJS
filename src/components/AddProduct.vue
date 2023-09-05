@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
 import { useStateStore } from "../store/state";
@@ -16,6 +16,8 @@ const inputState = ref("");
 const inputSale = ref(0);
 const selectGender = ref(3);
 const selectCategorie = ref(categories.categories[0]);
+
+let imgSlected = ref(false);
 
 const addProduct = () => {
   if (
@@ -68,6 +70,11 @@ const emptyProductInput = () => {
   inputPrice.value = 0;
   inputState.value = "";
 };
+
+watch(inputImg, (newInputImg) => {
+  if (newInputImg.trim() !== "" && newInputImg.trim()) imgSlected.value = true;
+  else  imgSlected.value = false
+});
 </script>
 
 <template>
@@ -75,7 +82,7 @@ const emptyProductInput = () => {
     <h3>Add Product</h3>
     <input type="text" placeholder="Name" v-model="inputName" />
     <input type="text" placeholder="ImageAlt" v-model="inputImgAlt" />
-    <label for="file-upload" class="custom-file-upload"> Image File </label>
+    <label for="file-upload" class="custom-file-upload" :class="{withImg: imgSlected}"> Image File </label>
     <input
       id="file-upload"
       type="file"
@@ -87,7 +94,7 @@ const emptyProductInput = () => {
     <!-- <input type="text" placeholder="State" v-model="inputState" /> -->
     <select name="state" v-model="inputState">
       <option value="">Default</option>
-      <option v-for="(stat) in state.state" :value="stat">{{ stat }}</option>
+      <option v-for="stat in state.state" :value="stat">{{ stat }}</option>
     </select>
     <select name="gender" v-model="selectGender">
       <option value="1">Men</option>
@@ -105,8 +112,7 @@ const emptyProductInput = () => {
 </template>
 
 <style scoped>
-
-h3{
+h3 {
   margin-bottom: 1rem;
 }
 
@@ -143,6 +149,7 @@ input[type="file"] {
   padding: 6px 12px;
   cursor: pointer;
   text-align: center;
+  transition: 0.5s;
 }
 
 button {
@@ -150,6 +157,11 @@ button {
   color: whitesmoke;
   background-color: #111;
   height: 45px !important;
+}
+
+.withImg{
+  background-color: #313131;
+  color: rgb(243, 243, 243);
 }
 
 @media only screen and (min-width: 600px) {

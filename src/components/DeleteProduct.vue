@@ -46,6 +46,10 @@ watch(inputId, (newInputId) => {
   selectGender = ref(store.products[inputId.value].gender);
   selectCategorie = ref(store.products[inputId.value].categories);
 });
+
+watch(inputImg, (newInputImg) => {
+  if (newInputImg.trim() !== "" && newInputImg.trim()) imgSlected.value = true;
+});
 </script>
 
 <template>

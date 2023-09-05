@@ -3,6 +3,7 @@ import { ref, computed, watch } from "vue";
 import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
 import { useStateStore } from "../store/state";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const store = useProductsStore();
 const categories = useCategoriesStore();
@@ -17,6 +18,8 @@ let inputState = ref(store.products[inputId.value].state);
 let inputSale = ref(store.products[inputId.value].sale);
 let selectGender = ref(store.products[inputId.value].gender);
 let selectCategorie = ref(store.products[inputId.value].categories);
+
+let imgSlected = ref(true);
 
 const editProduct = () => {
   if (
@@ -80,6 +83,11 @@ watch(inputId, (newInputId) => {
   selectGender = ref(store.products[inputId.value].gender);
   selectCategorie = ref(store.products[inputId.value].categories);
 });
+
+watch(inputImg, (newInputImg) => {
+  if ((newInputImg.trim() !== "" && newInputImg.trim())) imgSlected.value = true;
+  else  imgSlected.value = false
+});
 </script>
 
 <template>
@@ -88,7 +96,7 @@ watch(inputId, (newInputId) => {
     <input type="number" name="prodId" v-model="inputId" />
     <input type="text" placeholder="Name" v-model="inputName" />
     <input type="text" placeholder="ImageAlt" v-model="inputImgAlt" />
-    <label for="file-upload" class="custom-file-upload"> Image File </label>
+    <label for="file-upload" class="custom-file-upload" :class="{withImg: imgSlected}"> Image File </label>
     <input
       id="file-upload"
       type="file"
@@ -156,6 +164,7 @@ input[type="file"] {
   padding: 6px 12px;
   cursor: pointer;
   text-align: center;
+  transition: 0.5s;
 }
 
 button {
@@ -163,6 +172,11 @@ button {
   color: whitesmoke;
   background-color: #111;
   height: 45px !important;
+}
+
+.withImg{
+  background-color: #313131;
+  color: rgb(243, 243, 243);
 }
 
 @media only screen and (min-width: 600px) {
