@@ -39,6 +39,7 @@ const addProduct = () => {
     imgAlt: inputImgAlt.value,
     img: inputImg.value,
     price: inputPrice.value,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: inputState.value,
     link: "",

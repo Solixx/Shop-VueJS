@@ -4,12 +4,15 @@ import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
 import { useStateStore } from "../store/state";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const store = useProductsStore();
 const categories = useCategoriesStore();
 const state = useStateStore();
 
-let inputId = ref(0);
+let inputId = ref(route.params.id !== 0? route.params.id :0);
 let inputName = ref(store.products[inputId.value].name);
 let inputImgAlt = ref(store.products[inputId.value].imgAlt);
 let inputImg = ref(store.products[inputId.value].img);

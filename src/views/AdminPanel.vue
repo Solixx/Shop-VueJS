@@ -3,6 +3,7 @@ import { ref } from "vue";
 import AddProduct from "../components/AddProduct.vue";
 import EditProduct from "../components/EditProduct.vue";
 import DeleteProduct from "../components/DeleteProduct.vue";
+
 </script>
 
 <template>

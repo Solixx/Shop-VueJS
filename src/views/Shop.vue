@@ -12,13 +12,15 @@ const gender = ref(
 );
 const searchCategorie = ref("all");
 let windowWidth = ref(window.innerWidth);
+let chunkSize = ref(4)
 
 const rows = computed(() => {
-  let chunkSize = 4;
   if (typeOfWindowWidth.value == 0) {
     chunkSize = 1;
   } else if (typeOfWindowWidth.value == 1) {
     chunkSize = 2;
+  } else{
+    chunkSize = 4
   }
 
   const filterProds = [];
@@ -129,16 +131,18 @@ onBeforeMount(() => {
               :key="columnIndex"
             >
               <div class="arrivals-box">
-                <div class="arrivals-img-box">
-                  <img :src="element.img" alt="" />
-                  <h5
-                    v-if="element.state"
-                    class="arrivals-text"
-                    :class="getClassBasedOnState(element.state)"
-                  >
-                    {{ element.state }}
-                  </h5>
-                </div>
+                <router-link :to="{ name: 'Product', params: { id: store.products.indexOf(element)}}"
+                  ><div class="arrivals-img-box">
+                    <img :src="element.img" alt="" />
+                    <h5
+                      v-if="element.state"
+                      class="arrivals-text"
+                      :class="getClassBasedOnState(element.state)"
+                    >
+                      {{ element.state }}
+                    </h5>
+                  </div></router-link
+                >
                 <h4>{{ element.name }}</h4>
                 <h4 :class="{ onSale: element.sale > 0 }">
                   €{{ element.price }}

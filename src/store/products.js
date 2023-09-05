@@ -14,6 +14,7 @@ let testProducts = [
     imgAlt: "alt1",
     img: "https://i.pinimg.com/564x/15/f1/da/15f1dae2caac44e7bcec9611ec721b61.jpg",
     price: 29.99,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: state.state[0],
     link: "",
@@ -26,6 +27,7 @@ let testProducts = [
     imgAlt: "alt2",
     img: "https://i.pinimg.com/564x/3c/5c/63/3c5c63f8b7a2e430f6edc3174a5dd582.jpg",
     price: 59.99,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: state.state[0],
     link: "",
@@ -38,6 +40,7 @@ let testProducts = [
     imgAlt: "alt2",
     img: "https://i.pinimg.com/564x/5e/a9/b6/5ea9b64cddb01bf45be651c4b24ba5b2.jpg",
     price: 29.99,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: state.state[0],
     link: "",
@@ -50,6 +53,7 @@ let testProducts = [
     imgAlt: "alt2",
     img: "https://i.pinimg.com/564x/50/2f/d2/502fd290fd3a5e938272fbc294ad8f24.jpg",
     price: 59.99,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: state.state[0],
     link: "",
@@ -62,6 +66,7 @@ let testProducts = [
     imgAlt: "alt2",
     img: "https://i.pinimg.com/564x/dd/61/aa/dd61aa76ff411cbba1542f783386222f.jpg",
     price: 29.99,
+    createdDate: new Date(),
     createdAt: new Date().getTime(),
     state: state.state[0],
     link: "",
@@ -81,8 +86,6 @@ export const useProductsStore = defineStore("products", {
       alert('Product Add')
     },
     editProduct(id, name, imgAlt, img, price, state, sale, gender, categories) {
-      console.log(this.products[id].name)
-      console.log(name)
       this.products[id].name = name;
       this.products[id].imgAlt = imgAlt;
       this.products[id].img = img;
@@ -91,6 +94,8 @@ export const useProductsStore = defineStore("products", {
       this.products[id].sale = sale;
       this.products[id].gender = gender;
       this.products[id].categories = categories;
+      this.products[id].createdAt = new Date().getTime();
+      this.products[id].createdDate = new Date();
       alert('Product Edited')
     },
     deleteProduct(id) {
