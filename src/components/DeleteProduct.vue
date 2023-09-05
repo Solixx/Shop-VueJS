@@ -2,9 +2,11 @@
 import { ref, computed, watch } from "vue";
 import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
+import { useStateStore } from "../store/state";
 
 const store = useProductsStore();
 const categories = useCategoriesStore();
+const state = useStateStore();
 
 let inputId = ref(0);
 let inputName = ref(store.products[inputId.value].name);
@@ -52,7 +54,11 @@ watch(inputId, (newInputId) => {
     <input type="text" placeholder="Name" v-model="inputName" disabled />
     <input type="number" placeholder="Price" step=".01" v-model="inputPrice" disabled />
     <input type="number" placeholder="Sale" step=".01" v-model="inputSale" disabled />
-    <input type="text" placeholder="State" v-model="inputState" disabled />
+    <!-- <input type="text" placeholder="State" v-model="inputState" disabled /> -->
+    <select name="state" v-model="inputState">
+      <option value="">Default</option>
+      <option v-for="(stat) in state.state" :value="stat">{{ stat }}</option>
+    </select>
     <select name="gender" v-model="selectGender" disabled>
       <option value="1">Men</option>
       <option value="2">Women</option>

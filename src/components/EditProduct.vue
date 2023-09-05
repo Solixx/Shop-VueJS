@@ -2,9 +2,11 @@
 import { ref, computed, watch } from "vue";
 import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
+import { useStateStore } from "../store/state";
 
 const store = useProductsStore();
 const categories = useCategoriesStore();
+const state = useStateStore();
 
 let inputId = ref(0);
 let inputName = ref(store.products[inputId.value].name);
@@ -24,12 +26,6 @@ const editProduct = () => {
     inputPrice.value <= 0 ||
     inputSale.value < 0
   ) {
-    console.log('error')
-    console.log(inputName.value.trim())
-    console.log(inputImgAlt.value.trim())
-    console.log(inputImg.value.trim())
-    console.log(inputPrice.value)
-    console.log(inputSale.value)
     return;
   }
 
@@ -100,7 +96,11 @@ watch(inputId, (newInputId) => {
     />
     <input type="number" placeholder="Price" step=".01" v-model="inputPrice" />
     <input type="number" placeholder="Sale" step=".01" v-model="inputSale" />
-    <input type="text" placeholder="State" v-model="inputState" />
+    <!-- <input type="text" placeholder="State" v-model="inputState" /> -->
+    <select name="state" v-model="inputState">
+      <option value="">Default</option>
+      <option v-for="(stat) in state.state" :value="stat">{{ stat }}</option>
+    </select>
     <select name="gender" v-model="selectGender">
       <option value="1">Men</option>
       <option value="2">Women</option>
