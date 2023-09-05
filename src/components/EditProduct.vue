@@ -12,7 +12,7 @@ const store = useProductsStore();
 const categories = useCategoriesStore();
 const state = useStateStore();
 
-let inputId = ref(route.params.id !== 0? route.params.id :0);
+let inputId = ref(route.params.id? route.params.id :0);
 let inputName = ref(store.products[inputId.value].name);
 let inputImgAlt = ref(store.products[inputId.value].imgAlt);
 let inputImg = ref(store.products[inputId.value].img);
