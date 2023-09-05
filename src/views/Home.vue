@@ -92,11 +92,11 @@ onBeforeMount(() => {
     <section class="shop-men-women">
       <div class="shop-men">
         <img src="../assets/mikey13.jpg" alt="Men Shop" />
-        <RouterLink :to="{name: 'Shop'}"><button>Shop Men</button></RouterLink>
+        <router-link :to="{ name: 'Shop', params: { gender: 1 }}"><button>Shop Men</button></router-link>
       </div>
       <div class="shop-women">
         <img src="../assets/hutao render2.jpg" alt="Female Shop" />
-        <RouterLink :to="{name: 'Shop'}"><button>Shop Women</button></RouterLink>
+        <router-link :to="{ name: 'Shop', params: { gender: 2 }}"><button>Shop Women</button></router-link>
       </div>
     </section>
     <section class="new-arrivals">

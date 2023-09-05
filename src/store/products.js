@@ -73,5 +73,12 @@ export const useProductsStore = defineStore("products", {
     addProduct(newProduct) {
       this.products.push(newProduct);
     },
+    filtProd(gender) {
+      const fil = []
+      for(let i = 0; i < this.products.length; i++){
+        if(this.products[i].gender === gender || gender === 3)  fil.push(this.products[i])
+      }
+      return fil
+    }
   },
 });

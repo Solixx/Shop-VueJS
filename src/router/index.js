@@ -8,7 +8,7 @@ import { createRouter, createWebHistory } from "vue-router"
 const routes = [
     {path: "/", name: "Home", component: Home},
     {path: "/admin-panel", name: "AdminPanel", component: AdminPanel},
-    {path: "/shop", name: "Shop", component: Shop},
+    {path: "/shop/:gender?", name: "Shop", component: Shop, props: true},
     {path: "/commands", name: "Commands", component: Commands},
 ]
 

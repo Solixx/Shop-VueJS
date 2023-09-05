@@ -1,8 +1,15 @@
 <script setup>
-import { ref, computed, onBeforeMount, onMounted } from "vue";
+import { ref, watch, computed, onBeforeMount, onMounted } from "vue";
 import { useProductsStore } from "../store/products";
+import { useRoute } from "vue-router";
 
 const store = useProductsStore();
+const route = useRoute();
+const gender = ref(
+  route.params.gender == 1 || route.params.gender == 2
+    ? route.params.gender
+    : 3
+);
 let windowWidth = ref(window.innerWidth);
 
 const rows = computed(() => {
@@ -13,10 +20,17 @@ const rows = computed(() => {
     chunkSize = 2;
   }
 
+  const filterProds = []
+  for (let i = 0; i < store.products.length; i++) {
+    if(store.products[i].gender == gender.value || gender.value == 3){
+      filterProds.push(store.products[i]);
+    }
+  }
+
   const rows = [];
 
-  for (let i = 0; i < store.products.length; i += chunkSize) {
-    rows.push(store.products.slice(i, i + chunkSize));
+  for (let i = 0; i < filterProds.length; i += chunkSize) {
+    rows.push(filterProds.slice(i, i + chunkSize));
   }
 
   return rows;
@@ -58,14 +72,15 @@ onBeforeMount(() => {
       <h2 style="text-align: center">Shop Men</h2>
       <div class="filters">
         <div class="selects">
-          <select name="" id="">
-            <option value="">Size</option>
+          <select name="gender" v-model="gender">
+            <option value="3">Onisex</option>
+            <option value="1">Men</option>
+            <option value="2">Women</option>
           </select>
-          <select name="" id="">
-            <option value="">Color</option>
-          </select>
-          <select name="" id="">
-            <option value="">Fit</option>
+          <select name="category" id="">
+            <option value="">All</option>
+            <option value="">Jacket</option>
+            <option value="">Shirt</option>
           </select>
         </div>
         <hr />
@@ -99,7 +114,10 @@ onBeforeMount(() => {
                   €{{ element.price }}
                 </h4>
                 <h4 v-if="element.sale > 0" class="salePrice">
-                  €{{ element.price - (element.price * (element.sale / 100)).toFixed(2) }}
+                  €{{
+                    element.price -
+                    (element.price * (element.sale / 100)).toFixed(2)
+                  }}
                 </h4>
               </div>
             </div>
