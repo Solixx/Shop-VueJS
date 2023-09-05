@@ -35,7 +35,8 @@ const emptyProductInput = () => {
 };
 
 watch(inputId, (newInputId) => {
-  if (newInputId >= store.products.length || newInputId < 0) emptyProductInput();
+  if (newInputId >= store.products.length) emptyProductInput();
+  else if(newInputId < 0) inputId.value = store.products.length-1
   inputName = ref(store.products[inputId.value].name);
   inputImgAlt = ref(store.products[inputId.value].imgAlt);
   inputImg = ref(store.products[inputId.value].img);
@@ -49,7 +50,7 @@ watch(inputId, (newInputId) => {
 
 <template>
   <form @submit.prevent="deleteProduct">
-    <h2>Delete Product</h2>
+    <h3>Delete Product</h3>
     <input type="number" name="prodId" v-model="inputId" />
     <input type="text" placeholder="Name" v-model="inputName" disabled />
     <input type="number" placeholder="Price" step=".01" v-model="inputPrice" disabled />
@@ -65,7 +66,6 @@ watch(inputId, (newInputId) => {
       <option value="3">Onisex</option>
     </select>
     <select name="category" v-model="selectCategorie" disabled>
-      <option value="all">All</option>
       <option v-for="(cat, index) in categories.categories" :value="cat">
         {{ cat }}
       </option>
@@ -76,6 +76,11 @@ watch(inputId, (newInputId) => {
 </template>
 
 <style scoped>
+
+h3{
+  margin-bottom: 1rem;
+}
+
 form {
   position: relative;
   height: 500px;

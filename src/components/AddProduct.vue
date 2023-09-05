@@ -15,7 +15,7 @@ const inputPrice = ref(0);
 const inputState = ref("");
 const inputSale = ref(0);
 const selectGender = ref(3);
-const selectCategorie = ref("all");
+const selectCategorie = ref(categories.categories[0]);
 
 const addProduct = () => {
   if (
@@ -42,6 +42,7 @@ const addProduct = () => {
     link: "",
     sale: inputSale.value,
     gender: selectGender.value,
+    categories: selectCategorie.value,
   };
 
   store.addProduct(newProduct);
@@ -71,7 +72,7 @@ const emptyProductInput = () => {
 
 <template>
   <form @submit.prevent="addProduct">
-    <h2>Add Product</h2>
+    <h3>Add Product</h3>
     <input type="text" placeholder="Name" v-model="inputName" />
     <input type="text" placeholder="ImageAlt" v-model="inputImgAlt" />
     <label for="file-upload" class="custom-file-upload"> Image File </label>
@@ -94,7 +95,6 @@ const emptyProductInput = () => {
       <option value="3">Onisex</option>
     </select>
     <select name="category" v-model="selectCategorie">
-      <option value="all">All</option>
       <option v-for="(cat, index) in categories.categories" :value="cat">
         {{ cat }}
       </option>
@@ -105,6 +105,11 @@ const emptyProductInput = () => {
 </template>
 
 <style scoped>
+
+h3{
+  margin-bottom: 1rem;
+}
+
 form {
   position: relative;
   height: 500px;
