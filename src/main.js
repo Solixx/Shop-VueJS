@@ -13,8 +13,8 @@ library.add(faMicrophone, faMicrophoneSlash)
 const pinia = createPinia();
 
 createApp(App)
-.use(router)
 .use(pinia)
+.use(router)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')
 

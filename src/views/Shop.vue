@@ -1,15 +1,18 @@
 <script setup>
-import { ref, watch, computed, onBeforeMount, onMounted } from "vue";
+import { ref, computed, onBeforeMount, onMounted } from "vue";
 import { useProductsStore } from "../store/products";
+import { useCategoriesStore } from '../store/categories';
 import { useRoute } from "vue-router";
 
 const store = useProductsStore();
+const categories = useCategoriesStore()
 const route = useRoute();
 const gender = ref(
   route.params.gender == 1 || route.params.gender == 2
     ? route.params.gender
-    : 3
+    : 0
 );
+const searchCategorie = ref('all')
 let windowWidth = ref(window.innerWidth);
 
 const rows = computed(() => {
@@ -20,10 +23,30 @@ const rows = computed(() => {
     chunkSize = 2;
   }
 
+  console.log(searchCategorie.value)
+
   const filterProds = []
   for (let i = 0; i < store.products.length; i++) {
-    if(store.products[i].gender == gender.value || gender.value == 3){
-      filterProds.push(store.products[i]);
+    if(store.products[i].gender == gender.value || gender.value == 0){
+      if(searchCategorie.value.trim().toLowerCase() == 'all'){
+        filterProds.push(store.products[i]);
+        continue
+      }
+      let l = 0, r = store.products[i].categories.length-1
+      while (l <= r){
+        console.log(store.products[i].categories[l].trim().toLowerCase())
+        if(store.products[i].categories[l].trim().toLowerCase() == searchCategorie.value.trim().toLowerCase()){
+          filterProds.push(store.products[i]);
+          break
+        }
+        console.log(store.products[i].categories[r].trim().toLowerCase())
+        if(store.products[i].categories[r].trim().toLowerCase() == searchCategorie.value.trim().toLowerCase()){
+          filterProds.push(store.products[i]);
+          break
+        }
+        l++
+        r--
+      }
     }
   }
 
@@ -69,18 +92,21 @@ onBeforeMount(() => {
 <template>
   <main>
     <section class="men-gallery-box">
-      <h2 style="text-align: center">Shop Men</h2>
+      <h2 style="text-align: center" v-if="gender == 0">Shop</h2>
+      <h2 style="text-align: center" v-else-if="gender == 1">Shop Men</h2>
+      <h2 style="text-align: center" v-else-if="gender == 2">Shop Women</h2>
+      <h2 style="text-align: center" v-else>Shop Onisex</h2>
       <div class="filters">
         <div class="selects">
           <select name="gender" v-model="gender">
-            <option value="3">Onisex</option>
+            <option value="0">All</option>
             <option value="1">Men</option>
             <option value="2">Women</option>
+            <option value="3">Onisex</option>
           </select>
-          <select name="category" id="">
-            <option value="">All</option>
-            <option value="">Jacket</option>
-            <option value="">Shirt</option>
+          <select name="category" v-model="searchCategorie">
+            <option value="all">All</option>
+            <option v-for="(cat, index) in categories.categories" :value="cat">{{ cat }}</option>
           </select>
         </div>
         <hr />

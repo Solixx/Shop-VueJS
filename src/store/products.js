@@ -1,6 +1,10 @@
-import { createPinia } from "pinia";
+import { defineStore, setActivePinia, createPinia } from 'pinia';
+import { useCategoriesStore } from './categories';
 
-import { defineStore } from 'pinia'
+const pinia = createPinia();
+setActivePinia(pinia)
+
+const categories = useCategoriesStore()
 
 let testProducts = [
   {
@@ -13,7 +17,7 @@ let testProducts = [
     link: "",
     sale: 10,
     gender: 2, // 1 -> Men / 2 -> Women / 3 -> Onisex
-    categories: ['shirt']
+    categories: categories.categories[1] 
   },
   {
     name: "Jacket",
@@ -25,7 +29,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 3,
-    categories: ['jacket']
+    /* categories: categories.categories[0] */
   },
   {
     name: "Shirt",
@@ -37,7 +41,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: ['shirt']
+    /* categories: categories.categories[1] */
   },
   {
     name: "Jacket",
@@ -49,7 +53,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 1,
-    categories: ['jacket']
+    /* categories: categories.categories[0] */
   },
   {
     name: "Shirt",
@@ -61,7 +65,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: ['shirt']
+    /* categories: categories.categories[1] */
   },
 ];
 
