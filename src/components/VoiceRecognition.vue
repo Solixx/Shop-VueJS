@@ -74,15 +74,15 @@ const CheckForComand = (result) => {
     setTimeout(() => emit("toggleProduct", { value: false, trigger: 'editProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   } else if (
-    t.toLowerCase().includes("delte product") ||
-    t.toLowerCase().includes("open delte product form")
+    t.toLowerCase().includes("delete product") ||
+    t.toLowerCase().includes("open delete product form")
   ) {
     sr.stop();
     setTimeout(() => emit("toggleProduct", { value: true, trigger: 'delteProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   } else if (
-    t.toLowerCase().includes("close delte product") ||
-    t.toLowerCase().includes("close delte product form")
+    t.toLowerCase().includes("close delete product") ||
+    t.toLowerCase().includes("close delete product form")
   ) {
     sr.stop();
     setTimeout(() => emit("toggleProduct", { value: false, trigger: 'delteProduct' }), 100);
