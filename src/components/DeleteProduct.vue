@@ -120,11 +120,22 @@ input[type="file"] {
   text-align: center;
 }
 
+.custom-file-upload:hover {
+  background-color: #ebebeb;
+  border: 1px solid black;
+  color: black;
+}
+
 button {
   font-weight: bold;
   color: whitesmoke;
   background-color: #111;
   height: 45px !important;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #202020;
 }
 
 @media only screen and (min-width: 600px) {

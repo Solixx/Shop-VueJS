@@ -152,11 +152,22 @@ input[type="file"] {
   transition: 0.5s;
 }
 
+.custom-file-upload:hover {
+  background-color: #ebebeb;
+  border: 1px solid black;
+  color: black;
+}
+
 button {
   font-weight: bold;
   color: whitesmoke;
   background-color: #111;
   height: 45px !important;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #202020;
 }
 
 .withImg{
