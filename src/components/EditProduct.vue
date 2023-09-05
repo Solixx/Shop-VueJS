@@ -1,21 +1,22 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { useProductsStore } from "../store/products";
 import { useCategoriesStore } from "../store/categories";
 
 const store = useProductsStore();
 const categories = useCategoriesStore();
 
-const inputName = ref("");
-const inputImgAlt = ref("");
-const inputImg = ref("");
-const inputPrice = ref(0);
-const inputState = ref("");
-const inputSale = ref(0);
-const selectGender = ref(3);
-const selectCategorie = ref("all");
+let inputId = ref(0);
+let inputName = ref(store.products[inputId.value].name);
+let inputImgAlt = ref(store.products[inputId.value].imgAlt);
+let inputImg = ref(store.products[inputId.value].img);
+let inputPrice = ref(store.products[inputId.value].price);
+let inputState = ref(store.products[inputId.value].state);
+let inputSale = ref(store.products[inputId.value].sale);
+let selectGender = ref(store.products[inputId.value].gender);
+let selectCategorie = ref(store.products[inputId.value].categories);
 
-const addProduct = () => {
+const editProduct = () => {
   if (
     inputName.value.trim() === "" ||
     inputImgAlt.value.trim() === "" ||
@@ -23,28 +24,32 @@ const addProduct = () => {
     inputPrice.value <= 0 ||
     inputSale.value < 0
   ) {
+    console.log('error')
+    console.log(inputName.value.trim())
+    console.log(inputImgAlt.value.trim())
+    console.log(inputImg.value.trim())
+    console.log(inputPrice.value)
+    console.log(inputSale.value)
     return;
   }
 
-  if (inputState.value.trim() === "" && inputSale.value > 0) {
+  if (inputState.value.trim() === "sale" && inputSale.value == 0) {
+    inputState.value = "";
+  } else if(inputState.value.trim() === "" && inputSale.value > 0){
     inputState.value = "sale";
   }
 
-  const newProduct = {
-    name: inputName.value,
-    imgAlt: inputImgAlt.value,
-    img: inputImg.value,
-    price: inputPrice.value,
-    createdAt: new Date().getTime(),
-    state: inputState.value,
-    link: "",
-    sale: inputSale.value,
-    gender: selectGender.value,
-  };
-
-  store.addProduct(newProduct);
-
-  emptyProductInput();
+  store.editProduct(
+    inputId.value,
+    inputName.value,
+    inputImgAlt.value,
+    inputImg.value,
+    inputPrice.value,
+    inputState.value,
+    inputSale.value,
+    selectGender.value,
+    selectCategorie.value
+  );
 };
 
 const handleImgChange = (event) => {
@@ -59,17 +64,31 @@ const handleImgChange = (event) => {
 };
 
 const emptyProductInput = () => {
+  inputId.value = 0;
   inputName.value = "";
   inputImgAlt.value = "";
   inputImg.value = "";
   inputPrice.value = 0;
   inputState.value = "";
 };
+
+watch(inputId, (newInputId) => {
+  if (newInputId >= store.products.length || newInputId < 0) emptyProductInput();
+  inputName = ref(store.products[inputId.value].name);
+  inputImgAlt = ref(store.products[inputId.value].imgAlt);
+  inputImg = ref(store.products[inputId.value].img);
+  inputPrice = ref(store.products[inputId.value].price);
+  inputState = ref(store.products[inputId.value].state);
+  inputSale = ref(store.products[inputId.value].sale);
+  selectGender = ref(store.products[inputId.value].gender);
+  selectCategorie = ref(store.products[inputId.value].categories);
+});
 </script>
 
 <template>
-  <form @submit.prevent="addProduct">
-    <h2>Add Product</h2>
+  <form @submit.prevent="editProduct">
+    <h2>Edit Product</h2>
+    <input type="number" name="prodId" v-model="inputId" />
     <input type="text" placeholder="Name" v-model="inputName" />
     <input type="text" placeholder="ImageAlt" v-model="inputImgAlt" />
     <label for="file-upload" class="custom-file-upload"> Image File </label>
@@ -89,7 +108,7 @@ const emptyProductInput = () => {
     </select>
     <select name="category" v-model="selectCategorie">
       <option value="all">All</option>
-      <option v-for="(cat, index) in categories.categories" :value="cat">
+      <option v-for="(cat) in categories.categories" :value="cat">
         {{ cat }}
       </option>
     </select>

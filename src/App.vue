@@ -3,8 +3,13 @@ import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 
 import Navbar from "./components/Navbar.vue";
 import AddProduct from "./components/AddProduct.vue";
+import EditProduct from "./components/EditProduct.vue";
+import DeleteProduct from "./components/DeleteProduct.vue";
 import VoiceRecognition from "./components//VoiceRecognition.vue";
-import { useProductsStore } from './store/products';
+import { useProductsStore } from "./store/products";
+import { useCategoriesStore } from "./store/categories";
+
+const categories = useCategoriesStore();
 
 let testProducts = [
   {
@@ -17,7 +22,7 @@ let testProducts = [
     link: "",
     sale: 10,
     gender: 2, // 1 -> Men / 2 -> Women / 3 -> Onisex
-    categories: ['shirt']
+    categories: categories.categories[1],
   },
   {
     name: "Jacket",
@@ -29,7 +34,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 3,
-    categories: ['jacket']
+    categories: categories.categories[0],
   },
   {
     name: "Shirt",
@@ -41,7 +46,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: ['shirt']
+    categories: categories.categories[1],
   },
   {
     name: "Jacket",
@@ -53,7 +58,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 1,
-    categories: ['jacket']
+    categories: categories.categories[0],
   },
   {
     name: "Shirt",
@@ -65,23 +70,25 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: ['shirt']
+    categories: categories.categories[1],
   },
 ];
 
 const store = useProductsStore();
 
 const popupTriggers = ref({
-  addProduct: false
-})
+  addProduct: false,
+  editProduct: false,
+  deleteProduct: false,
+});
 
-const handleToggleAddProduct = (val) => {
-  popupTriggers.value.addProduct = val
-}
+const handleToggleAddProduct = (obj) => {
+  popupTriggers.value[obj.trigger] = obj.value;
+};
 
 const togglePopup = (trigger) => {
-  popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-}
+  popupTriggers.value[trigger] = !popupTriggers.value[trigger];
+};
 
 watch(
   store.products,
@@ -92,8 +99,12 @@ watch(
 );
 
 onMounted(() => {
-  if(localStorage.getItem('products') === null || localStorage.getItem('products') === [] || !localStorage.getItem('products')){
-    localStorage.setItem('products', JSON.stringify(testProducts))
+  if (
+    localStorage.getItem("products") === null ||
+    localStorage.getItem("products") === [] ||
+    !localStorage.getItem("products")
+  ) {
+    localStorage.setItem("products", JSON.stringify(testProducts));
   }
 });
 </script>
@@ -101,16 +112,36 @@ onMounted(() => {
 <template>
   <Navbar />
   <router-view></router-view>
-  <!-- <Home :products="products" /> -->
-  <!-- <AdminPanel :products="products" @addNewProduct="handleAddNewProduct"></AdminPanel> -->
   <div class="popup" v-if="popupTriggers.addProduct">
-    <AddProduct
-      class="addProduct"
-    >
-      <button class="addproducts-popup-close" @click="togglePopup('addProduct')">X</button>
+    <AddProduct class="addProduct">
+      <button
+        class="addproducts-popup-close"
+        @click="togglePopup('addProduct')"
+      >
+        X
+      </button>
     </AddProduct>
+    <EditProduct class="editProduct">
+      <button
+        class="editproducts-popup-close"
+        @click="togglePopup('editProduct')"
+      >
+        X</button
+      >></EditProduct
+    >
+    <DeleteProduct class="deleteProduct">
+      <button
+        class="deleteproducts-popup-close"
+        @click="togglePopup('deleteProduct')"
+      >
+        X</button
+      >></DeleteProduct
+    >
   </div>
-  <VoiceRecognition class="voiceRecognition" @toggleAddProduct="handleToggleAddProduct" />
+  <VoiceRecognition
+    class="voiceRecognition"
+    @toggleProduct="handleToggleAddProduct"
+  />
 </template>
 
 <style scoped>
@@ -127,14 +158,14 @@ onMounted(() => {
   justify-content: center;
 }
 
-.popup .addProduct{
+.popup .addProduct, .editProduct, .deleteProduct {
   height: 500px;
   width: 500px;
-  background-color: 	rgba(255,255,255, 1);
+  background-color: rgba(255, 255, 255, 1);
   border-radius: 1%;
 }
 
-.voiceRecognition{
+.voiceRecognition {
   position: fixed;
   z-index: 99;
   bottom: 2.5%;

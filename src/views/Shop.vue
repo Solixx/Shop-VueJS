@@ -1,18 +1,16 @@
 <script setup>
 import { ref, computed, onBeforeMount, onMounted } from "vue";
 import { useProductsStore } from "../store/products";
-import { useCategoriesStore } from '../store/categories';
+import { useCategoriesStore } from "../store/categories";
 import { useRoute } from "vue-router";
 
 const store = useProductsStore();
-const categories = useCategoriesStore()
+const categories = useCategoriesStore();
 const route = useRoute();
 const gender = ref(
-  route.params.gender == 1 || route.params.gender == 2
-    ? route.params.gender
-    : 0
+  route.params.gender == 1 || route.params.gender == 2 ? route.params.gender : 0
 );
-const searchCategorie = ref('all')
+const searchCategorie = ref("all");
 let windowWidth = ref(window.innerWidth);
 
 const rows = computed(() => {
@@ -23,30 +21,34 @@ const rows = computed(() => {
     chunkSize = 2;
   }
 
-  console.log(searchCategorie.value)
-
-  const filterProds = []
+  const filterProds = [];
   for (let i = 0; i < store.products.length; i++) {
-    if(store.products[i].gender == gender.value || gender.value == 0){
-      if(searchCategorie.value.trim().toLowerCase() == 'all'){
+    if (store.products[i].gender == gender.value || gender.value == 0) {
+      if (
+        searchCategorie.value.trim().toLowerCase() == "all" ||
+        store.products[i].categories.trim().toLowerCase() ==
+          searchCategorie.value.trim().toLowerCase()
+      ) {
+        filterProds.push(store.products[i]);
+        continue;
+      }
+      /* if(searchCategorie.value.trim().toLowerCase() == 'all'){
         filterProds.push(store.products[i]);
         continue
       }
       let l = 0, r = store.products[i].categories.length-1
       while (l <= r){
-        console.log(store.products[i].categories[l].trim().toLowerCase())
-        if(store.products[i].categories[l].trim().toLowerCase() == searchCategorie.value.trim().toLowerCase()){
+        if(store.products[i].categories[l] == searchCategorie.value){
           filterProds.push(store.products[i]);
           break
         }
-        console.log(store.products[i].categories[r].trim().toLowerCase())
-        if(store.products[i].categories[r].trim().toLowerCase() == searchCategorie.value.trim().toLowerCase()){
+        if(store.products[i].categories[r] == searchCategorie.value){
           filterProds.push(store.products[i]);
           break
         }
         l++
         r--
-      }
+      } */
     }
   }
 
@@ -106,7 +108,9 @@ onBeforeMount(() => {
           </select>
           <select name="category" v-model="searchCategorie">
             <option value="all">All</option>
-            <option v-for="(cat, index) in categories.categories" :value="cat">{{ cat }}</option>
+            <option v-for="(cat, index) in categories.categories" :value="cat">
+              {{ cat }}
+            </option>
           </select>
         </div>
         <hr />
@@ -176,6 +180,8 @@ onBeforeMount(() => {
 .filters select {
   border: 0;
   background-color: transparent;
+  font-size: 1rem;
+  margin-right: 1rem;
 }
 
 .men-arrivals {

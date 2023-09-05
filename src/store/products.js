@@ -29,7 +29,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 3,
-    /* categories: categories.categories[0] */
+    categories: categories.categories[0]
   },
   {
     name: "Shirt",
@@ -41,7 +41,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    /* categories: categories.categories[1] */
+    categories: categories.categories[1]
   },
   {
     name: "Jacket",
@@ -53,7 +53,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 1,
-    /* categories: categories.categories[0] */
+    categories: categories.categories[0]
   },
   {
     name: "Shirt",
@@ -65,7 +65,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    /* categories: categories.categories[1] */
+    categories: categories.categories[1]
   },
 ];
 
@@ -77,12 +77,20 @@ export const useProductsStore = defineStore("products", {
     addProduct(newProduct) {
       this.products.push(newProduct);
     },
-    filtProd(gender) {
-      const fil = []
-      for(let i = 0; i < this.products.length; i++){
-        if(this.products[i].gender === gender || gender === 3)  fil.push(this.products[i])
-      }
-      return fil
-    }
+    editProduct(id, name, imgAlt, img, price, state, sale, gender, categories) {
+      console.log(this.products[id].name)
+      console.log(name)
+      this.products[id].name = name;
+      this.products[id].imgAlt = imgAlt;
+      this.products[id].img = img;
+      this.products[id].price = price;
+      this.products[id].state = state;
+      this.products[id].sale = sale;
+      this.products[id].gender = gender;
+      this.products[id].categories = categories;
+    },
+    deleteProduct(id) {
+      this.products.splice(id, 1)
+    },
   },
 });

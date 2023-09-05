@@ -45,11 +45,11 @@ const CheckForComand = (result) => {
     sr.stop();
   } else if (
     t.toLowerCase().includes("add product") ||
-    t.toLowerCase().includes("add product") ||
+    t.toLowerCase().includes("ad product") ||
     t.toLowerCase().includes("open product form")
   ) {
     sr.stop();
-    setTimeout(() => emit("toggleAddProduct", true), 100);
+    setTimeout(() => emit("toggleProduct", { value: true, trigger: 'addProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   } else if (
     t.toLowerCase().includes("close add product") ||
@@ -57,7 +57,35 @@ const CheckForComand = (result) => {
     t.toLowerCase().includes("close product form")
   ) {
     sr.stop();
-    setTimeout(() => emit("toggleAddProduct", false), 100);
+    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'addProduct' }), 100);
+    setTimeout(() => sr.start(), 100);
+  } else if (
+    t.toLowerCase().includes("edit product") ||
+    t.toLowerCase().includes("open edit product form")
+  ) {
+    sr.stop();
+    setTimeout(() => emit("toggleProduct", { value: true, trigger: 'editProduct' }), 100);
+    setTimeout(() => sr.start(), 100);
+  } else if (
+    t.toLowerCase().includes("close edit product") ||
+    t.toLowerCase().includes("close edit product form")
+  ) {
+    sr.stop();
+    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'editProduct' }), 100);
+    setTimeout(() => sr.start(), 100);
+  } else if (
+    t.toLowerCase().includes("delte product") ||
+    t.toLowerCase().includes("open delte product form")
+  ) {
+    sr.stop();
+    setTimeout(() => emit("toggleProduct", { value: true, trigger: 'delteProduct' }), 100);
+    setTimeout(() => sr.start(), 100);
+  } else if (
+    t.toLowerCase().includes("close delte product") ||
+    t.toLowerCase().includes("close delte product form")
+  ) {
+    sr.stop();
+    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'delteProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   }
 };
