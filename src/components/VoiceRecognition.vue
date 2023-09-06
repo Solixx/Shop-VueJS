@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import App from "../App.vue";
 
-const emit = defineEmits(["toggleAddProduct"]);
+const emit = defineEmits(["toggleProduct"]);
 
 const transcript = ref("");
 const isRecording = ref(false);
@@ -51,41 +51,27 @@ const CheckForComand = (result) => {
     sr.stop();
     setTimeout(() => emit("toggleProduct", { value: true, trigger: 'addProduct' }), 100);
     setTimeout(() => sr.start(), 100);
-  } else if (
-    t.toLowerCase().includes("close add product") ||
-    t.toLowerCase().includes("close ad product") ||
-    t.toLowerCase().includes("close product form")
-  ) {
-    sr.stop();
-    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'addProduct' }), 100);
-    setTimeout(() => sr.start(), 100);
-  } else if (
+  }  else if (
     t.toLowerCase().includes("edit product") ||
+    t.toLowerCase().includes("edite product") ||
+    t.toLowerCase().includes("open edite product form") ||
     t.toLowerCase().includes("open edit product form")
   ) {
     sr.stop();
     setTimeout(() => emit("toggleProduct", { value: true, trigger: 'editProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   } else if (
-    t.toLowerCase().includes("close edit product") ||
-    t.toLowerCase().includes("close edit product form")
-  ) {
-    sr.stop();
-    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'editProduct' }), 100);
-    setTimeout(() => sr.start(), 100);
-  } else if (
     t.toLowerCase().includes("delete product") ||
     t.toLowerCase().includes("open delete product form")
   ) {
     sr.stop();
-    setTimeout(() => emit("toggleProduct", { value: true, trigger: 'delteProduct' }), 100);
+    setTimeout(() => emit("toggleProduct", { value: true, trigger: 'deleteProduct' }), 100);
     setTimeout(() => sr.start(), 100);
   } else if (
-    t.toLowerCase().includes("close delete product") ||
-    t.toLowerCase().includes("close delete product form")
+    t.toLowerCase().includes("close form")
   ) {
     sr.stop();
-    setTimeout(() => emit("toggleProduct", { value: false, trigger: 'delteProduct' }), 100);
+    setTimeout(() => emit("toggleProduct", { value: false, trigger: '' }), 100);
     setTimeout(() => sr.start(), 100);
   }
 };

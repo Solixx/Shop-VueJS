@@ -12,28 +12,20 @@
                     <h5>Stop voice recognition.</h5>
                 </div>
                 <div class="commands-info">
-                    <h4>add product / ad product / open product form</h4>
+                    <h4>add product / open product form</h4>
                     <h5>Open the Add Product Form Popup.</h5>
-                </div>
-                <div class="commands-info">
-                    <h4>close add product / close ad product / close product form</h4>
-                    <h5>Close the Add Product Form Popup.</h5>
                 </div>
                 <div class="commands-info">
                     <h4>edit product / open edit product form</h4>
                     <h5>Open the Edit Product Form Popup.</h5>
                 </div>
                 <div class="commands-info">
-                    <h4>close edit product / close edit product form</h4>
-                    <h5>Close the Edit Product Form Popup.</h5>
-                </div>
-                <div class="commands-info">
                     <h4>delete product / open delete product form</h4>
                     <h5>Open the Edit Product Form Popup.</h5>
                 </div>
                 <div class="commands-info">
-                    <h4>close delete product / close delete product form</h4>
-                    <h5>Close the Edit Product Form Popup.</h5>
+                    <h4>close form</h4>
+                    <h5>Close all the forms.</h5>
                 </div>
             </div>
         </section>

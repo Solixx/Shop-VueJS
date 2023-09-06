@@ -5,13 +5,14 @@ import Navbar from "./components/Navbar.vue";
 import AddProduct from "./components/AddProduct.vue";
 import EditProduct from "./components/EditProduct.vue";
 import DeleteProduct from "./components/DeleteProduct.vue";
-import VoiceRecognition from "./components//VoiceRecognition.vue";
+import VoiceRecognition from "./components/VoiceRecognition.vue";
+import Footer from "./components/Footer.vue";
 import { useProductsStore } from "./store/products";
 import { useCategoriesStore } from "./store/categories";
-import { useStateStore } from './store/state';
+import { useStateStore } from "./store/state";
 
 const categories = useCategoriesStore();
-const state = useStateStore()
+const state = useStateStore();
 
 let testProducts = [
   {
@@ -25,7 +26,7 @@ let testProducts = [
     link: "",
     sale: 10,
     gender: 2, // 1 -> Men / 2 -> Women / 3 -> Onisex
-    categories: categories.categories[1] 
+    categories: categories.categories[1],
   },
   {
     name: "Jacket",
@@ -38,7 +39,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 3,
-    categories: categories.categories[0]
+    categories: categories.categories[0],
   },
   {
     name: "Shirt",
@@ -51,7 +52,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: categories.categories[1]
+    categories: categories.categories[1],
   },
   {
     name: "Jacket",
@@ -64,7 +65,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 1,
-    categories: categories.categories[0]
+    categories: categories.categories[0],
   },
   {
     name: "Shirt",
@@ -77,7 +78,7 @@ let testProducts = [
     link: "",
     sale: 0,
     gender: 2,
-    categories: categories.categories[1]
+    categories: categories.categories[1],
   },
 ];
 
@@ -90,7 +91,14 @@ const popupTriggers = ref({
 });
 
 const handleToggleAddProduct = (obj) => {
-  popupTriggers.value[obj.trigger] = obj.value;
+  console.log(obj.trigger)
+  if(obj.trigger === 'addProduct' || obj.trigger === 'editProduct' || obj.trigger === 'addProduct'){
+    popupTriggers.value[obj.trigger] = obj.value;
+  } else{
+    popupTriggers.value.addProduct = false
+    popupTriggers.value.editProduct = false
+    popupTriggers.value.deleteProduct = false
+  }
 };
 
 const togglePopup = (trigger) => {
@@ -128,27 +136,32 @@ onMounted(() => {
         X
       </button>
     </AddProduct>
+  </div>
+  <div class="popup" v-if="popupTriggers.editProduct">
     <EditProduct class="editProduct">
       <button
         class="editproducts-popup-close"
         @click="togglePopup('editProduct')"
       >
-        X</button
-      >></EditProduct
-    >
+        X
+      </button>
+    </EditProduct>
+  </div>
+  <div class="popup" v-if="popupTriggers.deleteProduct">
     <DeleteProduct class="deleteProduct">
       <button
         class="deleteproducts-popup-close"
         @click="togglePopup('deleteProduct')"
       >
-        X</button
-      >></DeleteProduct
-    >
+        X
+      </button>
+    </DeleteProduct>
   </div>
   <VoiceRecognition
     class="voiceRecognition"
     @toggleProduct="handleToggleAddProduct"
   />
+  <Footer />
 </template>
 
 <style scoped>
@@ -165,7 +178,9 @@ onMounted(() => {
   justify-content: center;
 }
 
-.popup .addProduct, .editProduct, .deleteProduct {
+.popup .addProduct,
+.editProduct,
+.deleteProduct {
   height: 500px;
   width: 500px;
   background-color: rgba(255, 255, 255, 1);
