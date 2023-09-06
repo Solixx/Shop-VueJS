@@ -2,7 +2,7 @@
 import { ref, computed, watch, onBeforeMount, onMounted } from "vue";
 import defaultImage from "../assets/tml_flag.jpg";
 import primeImage from "../assets/Senju_Kawaragi22_4.0.jpg";
-import { useProductsStore } from '../store/products';
+import { useProductsStore } from "../store/products";
 
 const store = useProductsStore();
 
@@ -57,7 +57,7 @@ const handleResize = () => {
 watch(
   store.products,
   (newProduct) => {
-    console.log(newProduct)
+    console.log(newProduct);
     localStorage.setItem("products", JSON.stringify(newProduct));
   },
   { deep: true }
@@ -92,11 +92,15 @@ onBeforeMount(() => {
     <section class="shop-men-women">
       <div class="shop-men">
         <img src="../assets/mikey13.jpg" alt="Men Shop" />
-        <router-link :to="{ name: 'Shop', params: { gender: 1 }}"><button>Shop Men</button></router-link>
+        <router-link :to="{ name: 'Shop', params: { gender: 1 } }"
+          ><button>Shop Men</button></router-link
+        >
       </div>
       <div class="shop-women">
         <img src="../assets/hutao render2.jpg" alt="Female Shop" />
-        <router-link :to="{ name: 'Shop', params: { gender: 2 }}"><button>Shop Women</button></router-link>
+        <router-link :to="{ name: 'Shop', params: { gender: 2 } }"
+          ><button>Shop Women</button></router-link
+        >
       </div>
     </section>
     <section class="new-arrivals">
@@ -225,7 +229,7 @@ main {
 .text-box {
   position: absolute;
   z-index: 2;
-  height: 150px;
+  height: 250px;
   top: 80%;
   left: 50%;
   transform: translate(-50%, -80%);
@@ -255,7 +259,7 @@ main {
 .prime-img .text-box {
   position: absolute;
   z-index: 2;
-  height: 150px;
+  height: 250px;
   top: 80%;
   left: 50%;
   transform: translate(-50%, -80%);
@@ -403,6 +407,14 @@ main {
 }
 
 @media only screen and (min-width: 1024px) {
+  .text-box {
+    height: 150px;
+  }
+
+  .prime-img .text-box {
+    height: 150px;
+  }
+
   .shop-men-women {
     flex-direction: row;
   }
