@@ -97,7 +97,7 @@ onBeforeMount(() => {
         >
       </div>
       <div class="shop-women">
-        <img src="../assets/hutao render2.jpg" alt="Female Shop" />
+        <img src="../assets/hutao_render2.jpg" alt="Female Shop" />
         <router-link :to="{ name: 'Shop', params: { gender: 2 } }"
           ><button>Shop Women</button></router-link
         >
