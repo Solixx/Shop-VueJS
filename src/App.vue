@@ -11,6 +11,8 @@ import { useProductsStore } from "./store/products";
 import { useCategoriesStore } from "./store/categories";
 import { useStateStore } from "./store/state";
 
+import { Analytics } from "@vercel/analytics/*";
+
 const categories = useCategoriesStore();
 const state = useStateStore();
 
@@ -162,6 +164,8 @@ onMounted(() => {
     @toggleProduct="handleToggleAddProduct"
   />
   <Footer />
+
+  <Analytics />
 </template>
 
 <style scoped>
